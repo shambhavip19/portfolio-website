@@ -95,7 +95,7 @@ function Home({ isExiting, onEnter }) {
       </svg>
 
       <div className="home__content">
-        <h1 className="home__name">SHAMBHAVI PAHADE</h1>
+        <h1 className="home__name">SHAMBHAVI</h1>
         <p className="home__tagline">BUILDING INTELLIGENT AND SECURE SYSTEMS</p>
         <button className="home__enter" onClick={onEnter}>
           <span className="home__enter-bracket">[</span>
