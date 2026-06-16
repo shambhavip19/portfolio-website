@@ -1,0 +1,197 @@
+/* src/styles/network.css */
+
+.network {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background: var(--color-bg);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.network__hint {
+  position: fixed;
+  top: var(--space-lg);
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  letter-spacing: 0.18em;
+  color: var(--color-text-faint);
+  z-index: 2;
+  animation: hintPulse 2.4s ease-in-out infinite;
+  pointer-events: none;
+} 
+
+@keyframes hintPulse {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.network__svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ---------------------------------------------
+   Connections
+   --------------------------------------------- */
+.connection__path {
+  fill: none;
+  stroke: var(--color-text-faint);
+  stroke-width: 1;
+  opacity: 0.25;
+  transition: stroke var(--duration-medium) var(--ease-smooth),
+    opacity var(--duration-medium) var(--ease-smooth),
+    stroke-width var(--duration-medium) var(--ease-smooth);
+}
+
+.connection--active .connection__path {
+  stroke: var(--color-cyan);
+  stroke-width: 1.4;
+  opacity: 0.75;
+  filter: drop-shadow(0 0 4px var(--color-cyan-soft));
+}
+
+.connection__pulse {
+  fill: var(--color-cyan);
+  filter: drop-shadow(0 0 6px var(--color-cyan-glow));
+}
+
+/* ---------------------------------------------
+   Nodes
+   --------------------------------------------- */
+.node {
+  cursor: pointer;
+}
+
+.node__glow {
+  fill: var(--color-cyan);
+  opacity: 0;
+  transition: opacity var(--duration-medium) var(--ease-smooth),
+    r var(--duration-medium) var(--ease-smooth);
+}
+
+.node__core {
+  fill: var(--color-text);
+  opacity: 0.35;
+  transition: fill var(--duration-medium) var(--ease-smooth),
+    opacity var(--duration-medium) var(--ease-smooth),
+    r var(--duration-fast) var(--ease-smooth);
+}
+
+.node__label {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  fill: var(--color-text-faint);
+  opacity: 0.6;
+  transition: fill var(--duration-medium) var(--ease-smooth),
+    opacity var(--duration-medium) var(--ease-smooth);
+  user-select: none;
+}
+
+/* Inactive (resting) state — dim but deliberately visible, "powered but
+   idle" rather than invisible, per the brief. */
+.node--inactive .node__core {
+  fill: var(--color-text);
+  opacity: 0.3;
+}
+
+/* Active state — part of the current root→branch→leaf chain */
+.node--active .node__glow {
+  opacity: 0.55;
+  animation: nodePulse 2.6s ease-in-out infinite;
+}
+
+.node--active .node__core {
+  fill: var(--color-cyan);
+  opacity: 1;
+}
+
+.node--active .node__label {
+  fill: var(--color-text);
+  opacity: 1;
+}
+
+@keyframes nodePulse {
+  0%,
+  100% {
+    r: 16;
+    opacity: 0.45;
+  }
+  50% {
+    r: 22;
+    opacity: 0.7;
+  }
+}
+
+/* Selected leaf — the one whose panel is currently open. A slightly
+   stronger, non-pulsing glow + scale so it visually anchors against the
+   pulsing active-chain nodes around it. */
+.node--selected .node__core {
+  transform: scale(1.25);
+  fill: var(--color-cyan);
+}
+
+.node--selected .node__glow {
+  opacity: 0.85;
+  animation: none;
+  r: 20;
+}
+
+/* Branch nodes (have children) get a faint ring to distinguish them from
+   leaves at a glance, even before clicking anything. */
+.node--branch .node__core {
+  stroke: var(--color-cyan-soft);
+  stroke-width: 1.5;
+}
+
+/* ---------------------------------------------
+   Hover + focus — applies to inactive nodes so
+   exploration feels responsive even before a
+   click commits to a path.
+   --------------------------------------------- */
+.node:hover .node__core,
+.node:focus-visible .node__core {
+  opacity: 0.85;
+}
+
+.node:hover .node__glow,
+.node:focus-visible .node__glow {
+  opacity: 0.3;
+}
+
+.node:hover .node__label,
+.node:focus-visible .node__label {
+  opacity: 0.9;
+}
+
+.node--active:hover .node__core {
+  opacity: 1;
+}
+
+.node:focus-visible {
+  outline: none; /* custom glow above serves as the focus indicator */
+}
+
+/* ---------------------------------------------
+   Responsive
+   --------------------------------------------- */
+@media (max-width: 768px) {
+  .node__label {
+    font-size: 11px;
+  }
+
+  .network__hint {
+    font-size: var(--fs-xs);
+    top: var(--space-md);
+  }
+}

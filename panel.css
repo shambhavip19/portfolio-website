@@ -1,0 +1,161 @@
+/* src/styles/panel.css */
+
+.panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: var(--panel-width);
+  background: rgba(11, 13, 16, 0.72);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border-left: 1px solid var(--color-border);
+  box-shadow: -8px 0 40px rgba(0, 0, 0, 0.5);
+  z-index: 10;
+
+  transform: translateX(100%);
+  transition: transform var(--duration-medium) var(--ease-smooth),
+    border-color var(--duration-medium) var(--ease-smooth),
+    box-shadow var(--duration-medium) var(--ease-smooth);
+
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-xl) var(--space-lg);
+  overflow-y: auto;
+}
+
+.panel--open {
+  transform: translateX(0);
+  border-left-color: var(--color-border-active);
+  box-shadow: -8px 0 50px var(--color-cyan-soft), -8px 0 40px rgba(0, 0, 0, 0.5);
+}
+
+.panel__close {
+  position: absolute;
+  top: var(--space-md);
+  right: var(--space-md);
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  line-height: 1;
+  color: var(--color-text-dim);
+  border-radius: 50%;
+  transition: color var(--duration-fast) var(--ease-smooth),
+    background var(--duration-fast) var(--ease-smooth);
+}
+
+.panel__close:hover {
+  color: var(--color-cyan);
+  background: var(--color-cyan-soft);
+}
+
+/* ---------------------------------------------
+   Content
+   --------------------------------------------- */
+.panel__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  animation: panelContentIn var(--duration-medium) var(--ease-smooth) both;
+}
+
+@keyframes panelContentIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.panel__eyebrow {
+  font-family: var(--font-display);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: var(--color-cyan);
+}
+
+.panel__title {
+  font-size: var(--fs-xl);
+  color: var(--color-text);
+  margin-bottom: var(--space-xs);
+}
+
+.panel__body {
+  font-size: var(--fs-md);
+  line-height: 1.65;
+  color: var(--color-text-dim);
+}
+
+/* ---------------------------------------------
+   Meta rows (Experience: Company/Role/Duration,
+   Projects: Category/Stack, etc.)
+   --------------------------------------------- */
+.panel__meta {
+  margin-top: var(--space-sm);
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--space-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.panel__meta-row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-md);
+  font-size: var(--fs-sm);
+}
+
+.panel__meta-row dt {
+  color: var(--color-text-faint);
+}
+
+.panel__meta-row dd {
+  color: var(--color-text);
+  text-align: right;
+}
+
+/* ---------------------------------------------
+   Link (contact nodes: mailto/tel/https)
+   --------------------------------------------- */
+.panel__link {
+  margin-top: var(--space-md);
+  align-self: flex-start;
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--color-cyan);
+  padding-bottom: 2px;
+  border-bottom: 1px solid var(--color-cyan-soft);
+  transition: color var(--duration-fast) var(--ease-smooth),
+    border-color var(--duration-fast) var(--ease-smooth);
+}
+
+.panel__link:hover {
+  color: var(--color-text);
+  border-color: var(--color-text);
+}
+
+/* ---------------------------------------------
+   Responsive — full-width sheet on small screens
+   instead of a fixed side panel
+   --------------------------------------------- */
+@media (max-width: 600px) {
+  .panel {
+    width: 100%;
+    border-left: none;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .panel--open {
+    border-top-color: var(--color-border-active);
+  }
+}
